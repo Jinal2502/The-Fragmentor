@@ -87,8 +87,8 @@ export function calculateHamming(data: string) {
 
   steps.push({
     title: 'Hamming(7,4): Preparation',
-    description: 'Data bits are placed in positions 3, 5, 6, 7. Leave 1, 2, 4 for parity bits.',
-    bits: `PP${d[0]}P${d[1]}${d[2]}${d[3]}`,
+    description: 'Data bits are placed in positions 3, 5, 6, 7. Positions 1, 2, 4 are reserved for parity bits.',
+    bits: `00${d[0]}0${d[1]}${d[2]}${d[3]}`,
     highlight: [2, 4, 5, 6],
     operation: 'SETUP'
   });
@@ -96,9 +96,9 @@ export function calculateHamming(data: string) {
   // P1 = D1 ^ D2 ^ D4 = pos 3 ^ 5 ^ 7
   bits[1] = bits[3] ^ bits[5] ^ bits[7];
   steps.push({
-    title: 'Parity P1 Calculation',
-    description: `P1 checks odd positions (sum bits at 1,3,5,7). XORing [?, ${d[0]}, ${d[1]}, ${d[3]}] results in ${bits[1]}.`,
-    bits: `${bits[1]}P${d[0]}P${d[1]}${d[2]}${d[3]}`,
+    title: 'P1: Checks positions 1, 3, 5, 7',
+    description: `XORing bits at 3(${bits[3]}), 5(${bits[5]}), 7(${bits[7]}) results in ${bits[1]}.`,
+    bits: `${bits[1]}0${d[0]}0${d[1]}${d[2]}${d[3]}`,
     highlight: [0, 2, 4, 6],
     operation: `P1 = ${bits[1]}`
   });
@@ -106,9 +106,9 @@ export function calculateHamming(data: string) {
   // P2 = D1 ^ D3 ^ D4 = pos 3 ^ 6 ^ 7
   bits[2] = bits[3] ^ bits[6] ^ bits[7];
   steps.push({
-    title: 'Parity P2 Calculation',
-    description: `P2 checks bits having 2nd bit set in binary (2,3,6,7). XORing [?, ${d[0]}, ${d[2]}, ${d[3]}] results in ${bits[2]}.`,
-    bits: `${bits[1]}${bits[2]}${d[0]}P${d[1]}${d[2]}${d[3]}`,
+    title: 'P2: Checks positions 2, 3, 6, 7',
+    description: `XORing bits at 3(${bits[3]}), 6(${bits[6]}), 7(${bits[7]}) results in ${bits[2]}.`,
+    bits: `${bits[1]}${bits[2]}${d[0]}0${d[1]}${d[2]}${d[3]}`,
     highlight: [1, 2, 5, 6],
     operation: `P2 = ${bits[2]}`
   });
@@ -116,8 +116,8 @@ export function calculateHamming(data: string) {
   // P4 = D2 ^ D3 ^ D4 = pos 5 ^ 6 ^ 7
   bits[4] = bits[5] ^ bits[6] ^ bits[7];
   steps.push({
-    title: 'Parity P4 Calculation',
-    description: `P4 checks bits having 3rd bit set in binary (4,5,6,7). XORing [?, ${d[1]}, ${d[2]}, ${d[3]}] results in ${bits[4]}.`,
+    title: 'P4: Checks positions 4, 5, 6, 7',
+    description: `XORing bits at 5(${bits[5]}), 6(${bits[6]}), 7(${bits[7]}) results in ${bits[4]}.`,
     bits: `${bits[1]}${bits[2]}${d[0]}${bits[4]}${d[1]}${d[2]}${d[3]}`,
     highlight: [3, 4, 5, 6],
     operation: `P4 = ${bits[4]}`
